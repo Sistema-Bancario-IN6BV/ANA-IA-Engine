@@ -1,0 +1,11 @@
+{
+  "name": "Usuario",
+  "last_interaction": null,
+  "activity_level": 5,
+  "emotional_state": "neutral",
+  "conversation_level": 5,
+  "formality_level": 5,
+  "preferences": [],
+  "symptoms": [],
+  "conversations": []
+}
