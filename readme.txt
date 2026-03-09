@@ -1,0 +1,12 @@
+# Dependencias principales del proyecto ANA
+transformers>=4.30.0
+sentence-transformers>=2.2.0
+torch>=2.0.0
+huggingface-hub>=0.16.0
+
+# Procesamiento de datos
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Utilidades
+python-dateutil>=2.8.0
