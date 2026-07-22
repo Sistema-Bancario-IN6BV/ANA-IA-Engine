@@ -1,0 +1,21 @@
+ana_env/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secretos: config.py y .env nunca deben quedar horneados en la imagen
+config.py
+.env
+.env.*
+!.env.example
+!.env.docker.example
+
+.git
+.gitignore
+README.md
+readme.txt
+LICENSE
+*.postman_collection.json
