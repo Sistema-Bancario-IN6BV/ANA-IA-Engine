@@ -5,7 +5,7 @@
 
 # Ejecutar el servidor FastAPI con Uvicorn
 Write-Host "Iniciando servidor ANA en http://localhost:8000" -ForegroundColor Green
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+python -m uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
-# Desactivar entorno al finalizar
+# Desactivar al finalizar
 deactivate

@@ -1,17 +1,39 @@
-# Dependencias principales del proyecto ANA
-transformers>=4.30.0
+# Core IA
+# transformers fijado a la serie 4.x: la 5.x (lanzada muy recientemente) tiene
+# un bug conocido convirtiendo el tokenizer SentencePiece de modelos XLM-R
+# como cardiffnlp/twitter-xlm-roberta-base-sentiment ("Error parsing line").
+transformers>=4.30.0,<5.0.0
 sentence-transformers>=2.2.0
 torch>=2.0.0
 huggingface-hub>=0.16.0
+tiktoken>=0.7.0
+sentencepiece>=0.1.99
+protobuf>=3.20.0
 
 # API Web
 fastapi>=0.100.0
 uvicorn>=0.23.0
 httpx>=0.28.0
+python-multipart>=0.0.9
 
-# Procesamiento de datos
+# Config / validation
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Vision / documents
+timm>=0.9.0
+pillow>=10.0.0
+pytesseract>=0.3.10
+pdf2image>=1.16.0
+
+# Data
 numpy>=1.24.0
 pandas>=2.0.0
-
-# Utilidades
 python-dateutil>=2.8.0
+
+# Voice — STT: Groq Whisper API (via httpx, ya instalado)
+# Voice — TTS: Microsoft edge-tts, female neural voices, no API key needed
+edge-tts>=7.0.0
+
+# Tests
+pytest>=8.0.0

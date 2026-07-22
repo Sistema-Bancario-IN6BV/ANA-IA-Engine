@@ -1,0 +1,55 @@
+# --- Fase 8: imagen de producción de ANA-IA-Engine (multi-stage) ---
+
+# ---- Etapa 1: "builder" — resuelve e instala las dependencias de Python ----
+FROM python:3.11-slim AS builder
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt .
+
+# --prefix=/install: en vez de instalar en el site-packages global de esta
+# etapa, lo instala en una carpeta aislada que copiamos entera a la etapa
+# final — así ni la caché de pip ni archivos temporales de resolución llegan
+# a la imagen que se despliega.
+RUN pip install --no-cache-dir \
+    --extra-index-url https://download.pytorch.org/whl/cpu \
+    --prefix=/install \
+    -r requirements.txt
+
+# ---- Etapa 2: "runtime" — imagen final ----
+FROM python:3.11-slim AS runtime
+
+WORKDIR /usr/src/app
+
+# tesseract-ocr/poppler-utils SÍ son necesarios en runtime (los invoca la app
+# al procesar OCR), no solo en build — por eso viven en esta etapa, no en la
+# "builder". curl: usado por el healthcheck.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    tesseract-ocr-spa \
+    poppler-utils \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# /usr/local es donde python3.11 busca site-packages/binarios por defecto —
+# al copiar aquí lo instalado en /install, "uvicorn", "pytest", etc. y todas
+# las librerías quedan disponibles sin repetir el pip install.
+COPY --from=builder /install /usr/local
+
+COPY . .
+
+# python:3.11-slim no trae un usuario no-root por defecto (a diferencia de
+# node:*-alpine) — lo creamos explícitamente.
+RUN useradd --create-home --shell /bin/bash ana \
+    && chown -R ana:ana /usr/src/app
+USER ana
+
+EXPOSE 8000
+
+# Sin --reload (no hay bind mount que vigilar) y, a propósito, sin
+# --workers > 1: cada worker de uvicorn cargaría su propia copia completa de
+# los modelos de HF en memoria — multiplicar workers multiplica RAM. Si hace
+# falta más throughput, se escala con más contenedores detrás de un balanceador,
+# no con más workers dentro de uno solo.
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -40,34 +40,43 @@ class GroqService:
         data = response.json()
         return data["choices"][0]["message"]["content"].strip()
 
-    def generate_response(self, analysis: dict) -> str:
+    def generate_response(self, analysis: dict, language: str = "es") -> str:
         """Genera una respuesta amable y carinosa basada en el analisis."""
         emotional_state = analysis.get("emotional_state", "neutral")
         sentiment_label = analysis.get("sentiment_label", "neutral")
         sentiment_score = analysis.get("sentiment_score", 0.5)
         risk_level = analysis.get("risk_level", "bajo")
         context = analysis.get("context", "general")
-        text = analysis.get("text", "")
+        text = analysis.get("text", "").strip()
+
+        _lang_instructions: dict[str, str] = {
+            "es": "Responde siempre en español.",
+            "en": "Always respond in English.",
+            "pt": "Responde sempre em português.",
+            "fr": "Réponds toujours en français.",
+            "de": "Antworte immer auf Deutsch.",
+            "it": "Rispondi sempre in italiano.",
+        }
+        lang_instruction = _lang_instructions.get(language, "Responde siempre en español.")
 
         system_prompt = (
-            "Eres ANA, asistente empatica para adultos mayores. Tu objetivo es acompañar, "
-            "validar emociones y brindar apoyo con genuine calidez. "
-            ""
-            "INSTRUCCIONES:"
-            "- Valida PRIMERO la emoción: reconoce lo que siente (ej: 'Entiendo que te sientas solo'). "
-            "- Sé específico: usa su experiencia para mostrar que realmente entiendes. "
-            "- Ofrece apoyo breve pero meaningful: un consejo práctico, una pregunta de seguimiento o una palabra de ánimo. "
-            "- Mantén un tono cálido, cercano y como si fuera un amigo o familia que le importa. "
-            "- Sin lenguaje técnico ni formalismos. Habla como lo hacen las personas queridas. "
-            "- Máximo 2-3 oraciones, pero densas de empatía. Calidad sobre cantidad. "
-            "- Si menciona riesgo alto (soledad extrema, ideación suicida, abandono): valida con suavidad "
-            "y sugiere apoyo profesional/familiar como algo natural y cuidadoso, no como alarma."
-            "- Usa nombre si es posible. Personaliza cada respuesta. "
-            "- Si no hay riesgo, fomenta esperanza y conexión."
+            f"Eres ANA, asistente empatica para adultos mayores. {lang_instruction} "
+            "Tu objetivo es acompañar, validar emociones y brindar apoyo con genuine calidez. "
+            "\n\nINSTRUCCIONES:\n"
+            "- Valida PRIMERO la emoción: reconoce lo que siente (ej: 'Entiendo que te sientas solo')\n"
+            "- Sé específico: usa su experiencia para mostrar que realmente entiendes\n"
+            "- Ofrece apoyo breve pero meaningful: un consejo práctico, una pregunta de seguimiento o una palabra de ánimo\n"
+            "- Mantén un tono cálido, cercano y como si fuera un amigo o familia que le importa\n"
+            "- Sin lenguaje técnico ni formalismos. Habla como lo hacen las personas queridas\n"
+            "- Máximo 2-3 oraciones, pero densas de empatía. Calidad sobre cantidad\n"
+            "- Si menciona riesgo alto (soledad extrema, ideación suicida, abandono): valida con suavidad y sugiere apoyo\n"
+            "- Usa nombre si es posible. Personaliza cada respuesta\n"
+            "- Si no hay riesgo, fomenta esperanza y conexión\n"
+            "- IMPORTANTE: Tus respuestas deben terminar limpiamente sin caracteres incompletos"
         )
 
         user_prompt = (
-            f'Usuario dijo: "{text}"\n\n'
+            f"Usuario dijo: \"{text}\"\n\n"
             f"Analisis:\n"
             f"- Estado emocional: {emotional_state}\n"
             f"- Sentimiento: {sentiment_label} ({sentiment_score:.2f})\n"
@@ -77,7 +86,7 @@ class GroqService:
         )
 
         try:
-            return self._chat_completion(
+            response = self._chat_completion(
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},
@@ -85,6 +94,15 @@ class GroqService:
                 temperature=0.8,
                 max_tokens=200,
             )
+            
+            # Limpiar respuesta: eliminar caracteres incompletos como barras invertidas finales
+            response = response.strip()
+            # Si termina en barra invertida incompleta, removerla
+            while response.endswith('\\'):
+                response = response[:-1].strip()
+            
+            return response if response else "Estoy aqui para ti, querido. Si quieres, te escucho con calma."
+            
         except Exception as exc:
             print(f"[ERROR] Groq API: {exc}")
             return "Estoy aqui para ti, querido. Si quieres, te escucho con calma."
