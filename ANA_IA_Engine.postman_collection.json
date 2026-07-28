@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "ANA IA Engine",
+    "description": "Colección completa para probar ANA-IA-Engine. Servidor: http://localhost:8000",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Meta",
+      "item": [
+        {
+          "name": "Root — Info del servicio",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Conversación",
+      "item": [
+        {
+          "name": "Chat — Mensaje neutro",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Hoy me siento bien, salí a caminar un rato\",\n  \"user_name\": \"Don Carlos\",\n  \"user_age\": 72\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            }
+          }
+        },
+        {
+          "name": "Chat — Tristeza",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Me siento muy solo, mis hijos no me llaman hace semanas\",\n  \"user_name\": \"Doña Rosa\",\n  \"user_age\": 78\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            }
+          }
+        },
+        {
+          "name": "Chat — Ansiedad",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"No puedo dormir, estoy muy nervioso y no sé por qué\",\n  \"user_name\": \"Don Miguel\",\n  \"user_age\": 65\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            }
+          }
+        },
+        {
+          "name": "Chat — Riesgo alto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Ya no quiero seguir, todo es sin sentido y nadie me quiere\",\n  \"user_name\": \"Don Pedro\",\n  \"user_age\": 80\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            }
+          }
+        },
+        {
+          "name": "Chat — Alegría",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Hoy vinieron mis nietos a visitarme, estoy muy feliz\",\n  \"user_name\": \"Doña Carmen\",\n  \"user_age\": 70\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Análisis Emocional",
+      "item": [
+        {
+          "name": "Analyze — Texto neutro",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Hoy comí bien y vi televisión por la tarde\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze",
+              "host": ["{{base_url}}"],
+              "path": ["analyze"]
+            }
+          }
+        },
+        {
+          "name": "Analyze — Soledad",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Estoy completamente solo, nadie me visita ni me llama\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze",
+              "host": ["{{base_url}}"],
+              "path": ["analyze"]
+            }
+          }
+        },
+        {
+          "name": "Analyze — Riesgo crítico",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"No quiero vivir más, mejor muerto estaría\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze",
+              "host": ["{{base_url}}"],
+              "path": ["analyze"]
+            }
+          }
+        },
+        {
+          "name": "Analyze — Insomnio",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"No puedo dormir bien, tengo pesadillas y me despierto toda la noche\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze",
+              "host": ["{{base_url}}"],
+              "path": ["analyze"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Visión Computacional",
+      "item": [
+        {
+          "name": "Vision — Detectar objetos (imagen)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Selecciona una imagen JPG o PNG"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/vision/detect",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "vision", "detect"]
+            },
+            "description": "Sube una imagen (JPG/PNG) para detectar objetos.\nDevuelve: lista de objetos, is_alone, medication_detected, fall_risk_detected, summary.\n\nNOTA: La primera llamada descarga el modelo DETR (~160MB) — puede tardar."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documentos / OCR",
+      "item": [
+        {
+          "name": "Documents — Leer PDF o imagen",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Selecciona un PDF, PNG, JPG o TIFF"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/documents/read",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "documents", "read"]
+            },
+            "description": "Extrae texto y entidades de salud de un documento.\nDevuelve: text, pages, entities (medicamentos, diagnósticos, fechas...), summary.\n\nREQUISITO: Tesseract OCR instalado en el sistema."
+          }
+        }
+      ]
+    }
+  ]
+}
